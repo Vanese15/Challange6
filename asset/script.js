@@ -1,16 +1,45 @@
-// Moment.js for current date
-var today = moment().format("dddd, MMMM Do YYYY, h:mm");
-console.log(today)
+let weather = {
+    apiKey: "589d47aa01dbf84cbcaa459ab007d491",
+    fetchWeather: function (city) {
+      fetch(
+        "https://api.openweathermap.org/data/2.5/weather?q=" +
+          city +
+          "&units=metric&appid=" +
+          this.apiKey
+      )
 
-var currentDay = document.getElementById("currentDay")
-currentDay.textContent = today
 
-apikey = bbf67ec00ac7165ca3db6258ce11872b
+      const celsius = 100;
 
 
+      const fahrenheit = 1.8 * celsius + 32;
 
-
-    btn.addEventListener("click", function())
-
-        fetch("https://openweathermap.org/api")
-
+    console.log(`${celsius} Celsius = ${fahrenheit} Fahrenheit`);
+        .then((response) => {
+          if (!response.ok) {
+            alert("No weather found.");
+            throw new Error("No weather found.");
+          }
+          return response.json();
+        })
+        .then((data) => this.displayWeather(data));
+    },
+    displayWeather: function (data) {
+      const { name } = data;
+      const { icon, description } = data.weather[0];
+      const { temp, humidity } = data.main;
+      const { speed } = data.wind;
+        
+  document.querySelector(".search button").addEventListener("click", function () {
+    weather.search();
+  });
+  
+  document
+    .querySelector(".search-bar")
+    .addEventListener("keyup", function (event) {
+      if (event.key == "Enter") {
+        weather.search();
+      }
+    });
+  
+  weather.fetchWeather("North Brunswick");
